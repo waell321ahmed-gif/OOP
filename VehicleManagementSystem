@@ -1,0 +1,149 @@
+using System;
+using System.Collections.Generic;
+
+namespace VehicleManagementSystem
+{
+    abstract class Vehicle
+    {
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+
+        protected bool isRunning;
+        protected int fuelLevel;
+
+        public Vehicle(string brand, string model, int year)
+        {
+            Brand = brand;
+            Model = model;
+            Year = year;
+            fuelLevel = 50;
+            isRunning = false;
+        }
+
+        public virtual void Start()
+        {
+            if (!isRunning)
+            {
+                isRunning = true;
+                Console.WriteLine(Brand + " started");
+            }
+        }
+
+        public virtual void Stop()
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+                Console.WriteLine(Brand + " stopped");
+            }
+        }
+
+        public abstract void Drive();
+
+        public void ShowFuel()
+        {
+            Console.WriteLine("Fuel level: " + fuelLevel);
+        }
+
+        public void Refuel()
+        {
+            fuelLevel = 100;
+            Console.WriteLine(Brand + " refueled");
+        }
+    }
+
+    class Car : Vehicle
+    {
+        public Car(string brand, string model, int year)
+            : base(brand, model, year)
+        {
+        }
+
+        public override void Drive()
+        {
+            if (isRunning && fuelLevel > 0)
+            {
+                fuelLevel -= 10;
+                Console.WriteLine("Car is driving");
+            }
+            else
+            {
+                Console.WriteLine("Car cannot drive");
+            }
+        }
+    }
+
+    class Truck : Vehicle
+    {
+        public Truck(string brand, string model, int year)
+            : base(brand, model, year)
+        {
+        }
+
+        public override void Drive()
+        {
+            if (isRunning && fuelLevel > 0)
+            {
+                fuelLevel -= 20;
+                Console.WriteLine("Truck is driving");
+            }
+            else
+            {
+                Console.WriteLine("Truck cannot drive");
+            }
+        }
+    }
+
+    class Motorcycle : Vehicle
+    {
+        public Motorcycle(string brand, string model, int year)
+            : base(brand, model, year)
+        {
+        }
+
+        public override void Drive()
+        {
+            if (isRunning && fuelLevel > 0)
+            {
+                fuelLevel -= 5;
+                Console.WriteLine("Motorcycle is driving");
+            }
+            else
+            {
+                Console.WriteLine("Motorcycle cannot drive");
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Vehicle car = new Car("Toyota", "Corolla", 2022);
+            Vehicle truck = new Truck("Mercedes", "Actros", 2021);
+            Vehicle motorcycle = new Motorcycle("Honda", "CBR", 2023);
+
+            car.Start();
+            car.Drive();
+            car.ShowFuel();
+            car.Stop();
+
+            Console.WriteLine();
+
+            truck.Start();
+            truck.Drive();
+            truck.ShowFuel();
+            truck.Stop();
+
+            Console.WriteLine();
+
+            motorcycle.Start();
+            motorcycle.Drive();
+            motorcycle.ShowFuel();
+            motorcycle.Stop();
+
+            Console.ReadKey();
+        }
+    }
+}
