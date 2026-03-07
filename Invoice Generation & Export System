@@ -1,0 +1,149 @@
+using System;
+using System.Collections.Generic;
+
+class Product
+{
+    public string Name { get; set; }
+    public double Price { get; set; }
+
+    public Product(string name, double price)
+    {
+        Name = name;
+        Price = price;
+    }
+}
+
+class OrderItem
+{
+    public Product Product { get; set; }
+    public int Quantity { get; set; }
+
+    public OrderItem(Product product, int quantity)
+    {
+        Product = product;
+        Quantity = quantity;
+    }
+
+    public double GetTotal()
+    {
+        return Product.Price * Quantity;
+    }
+}
+
+class Order
+{
+    public List<OrderItem> Items = new List<OrderItem>();
+
+    public double GetTotal()
+    {
+        double total = 0;
+
+        foreach (var item in Items)
+        {
+            total += item.GetTotal();
+        }
+
+        return total;
+    }
+}
+
+interface IInvoiceExporter
+{
+    void Export(Order order);
+}
+
+class PdfExporter : IInvoiceExporter
+{
+    public void Export(Order order)
+    {
+        Console.WriteLine("Exporting invoice PDF");
+    }
+}
+
+class ExcelExporter : IInvoiceExporter
+{
+    public void Export(Order order)
+    {
+        Console.WriteLine("Exporting invoice to Excel");
+    }
+}
+
+class JsonExporter : IInvoiceExporter
+{
+    public void Export(Order order)
+    {
+        Console.WriteLine("Exporting invoice to JSON");
+    }
+}
+
+class ConsoleExporter : IInvoiceExporter
+{
+    public void Export(Order order)
+    {
+        Console.WriteLine("\nInvoice");
+        Console.WriteLine("Date: " + DateTime.Now);
+
+        foreach (var item in order.Items)
+        {
+            Console.WriteLine(
+                item.Quantity + " " +
+                item.Product.Name + " " +
+                item.Product.Price + "$ = " +
+                item.GetTotal() + "$"
+            );
+        }
+
+        Console.WriteLine("Total = " + order.GetTotal() + "$");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        List<Product> products = new List<Product>()
+        {
+            new Product("Keyboard",10),
+            new Product("Mouse",20),
+            new Product("iPhone",100)
+        };
+
+        Console.WriteLine("Available Products:");
+
+        for (int i = 0; i < products.Count; i++)
+        {
+            Console.WriteLine(i + " - " + products[i].Name + " " + products[i].Price + "$");
+        }
+
+        Order order = new Order();
+
+        Console.Write("\nEnter product number: ");
+        int productIndex = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter quantity: ");
+        int quantity = int.Parse(Console.ReadLine());
+
+        order.Items.Add(new OrderItem(products[productIndex], quantity));
+
+        Console.WriteLine("\nChoose export format:");
+        Console.WriteLine("1 - PDF");
+        Console.WriteLine("2 - Excel");
+        Console.WriteLine("3 - JSON");
+        Console.WriteLine("4 - Console");
+
+        int choice = int.Parse(Console.ReadLine());
+
+        IInvoiceExporter exporter = null;
+
+        if (choice == 1)
+            exporter = new PdfExporter();
+        else if (choice == 2)
+            exporter = new ExcelExporter();
+        else if (choice == 3)
+            exporter = new JsonExporter();
+        else
+            exporter = new ConsoleExporter();
+
+        exporter.Export(order);
+    }
+}
