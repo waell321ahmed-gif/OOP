@@ -1,0 +1,98 @@
+using System;
+using System;
+using System.Collections.Generic;
+
+public class TaskItem
+{
+    public string Description;
+    public bool IsCompleted;
+
+    public TaskItem(string desc)
+    {
+        Description = desc;
+        IsCompleted = false;
+    }
+
+    public void MarkAsDone()
+    {
+        IsCompleted = true;
+    }
+}
+
+public class ToDoList
+{
+    public List<TaskItem> Tasks = new List<TaskItem>();
+
+    public void AddTask(string desc)
+    {
+        TaskItem newTask = new TaskItem(desc);
+        Tasks.Add(newTask);
+        Console.WriteLine("تمت الإضافة");
+    }
+
+    public void ShowAll()
+    {
+        if (Tasks.Count == 0)
+        {
+            Console.WriteLine("القائمة فارغة");
+            return;
+        }
+
+        for (int i = 0; i < Tasks.Count; i++)
+        {
+            string status = Tasks[i].IsCompleted ? "[مكتملة]" : "[معلقة]";
+            Console.WriteLine((i + 1) + " " + status + " " + Tasks[i].Description);
+        }
+    }
+    public void RemoveTask(int index)
+    {
+        if (index >= 0 && index < Tasks.Count)
+        {
+            Tasks.RemoveAt(index);
+            Console.WriteLine("تم الحذف");
+        }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        ToDoList myApp = new ToDoList();
+
+        while (true)
+        {
+            Console.WriteLine("\n--- قائمة المهام ---");
+            Console.WriteLine("1. إضافة | 2. عرض | 3. إكمال | 4. حذف | 5. خروج");
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                Console.Write("وصف المهمة: ");
+                myApp.AddTask(Console.ReadLine());
+            }
+            else if (choice == "2")
+            {
+                myApp.ShowAll();
+            }
+            else if (choice == "3")
+            {
+                myApp.ShowAll();
+                Console.Write("رقم المهمة المكتملة: ");
+                int id = int.Parse(Console.ReadLine()) - 1;
+                if (id >= 0 && id < myApp.Tasks.Count)
+                    myApp.Tasks[id].MarkAsDone();
+            }
+            else if (choice == "4")
+            {
+                myApp.ShowAll();
+                Console.Write("رقم المهمة للحذف: ");
+                int id = int.Parse(Console.ReadLine()) - 1;
+                myApp.RemoveTask(id);
+            }
+            else if (choice == "5")
+            {
+                break;
+            }
+        }
+    }
+}
