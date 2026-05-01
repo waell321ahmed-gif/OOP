@@ -1,0 +1,27 @@
+using System;
+using System.Text.RegularExpressions;
+
+public class MyCookieCollection
+{
+    private Dictionary<string, string> cookies = new Dictionary<string, string>();
+
+    public string this[string key]
+
+    {
+        get { return cookies[key]; }
+        set { cookies[key] = value; }
+    }
+    
+
+  
+}
+
+class Program
+{
+    static void Main()
+    {
+        MyCookieCollection C = new MyCookieCollection();
+        C["username"] = "wael";
+        Console.WriteLine(C["username"]);
+    }
+}
