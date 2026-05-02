@@ -1,0 +1,48 @@
+using System;
+
+public class Post
+{
+    public string Title { get; private set; }
+    public string Description { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+
+    private int _vote;
+
+    public Post(string title, string description)
+    {
+        Title = title;
+        Description = description;
+        CreatedAt = DateTime.Now;
+        _vote = 0;
+    }
+
+    public void UpVote()
+    {
+        _vote++;
+    }
+
+    public void DownVote()
+    {
+        _vote--;
+    }
+
+    public int GetVote()
+    {
+        return _vote;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Post post = new Post("OOP", "Encapsulation");
+
+        post.UpVote();
+        post.UpVote();
+        post.DownVote();
+
+        Console.WriteLine("Title: " + post.Title);
+        Console.WriteLine("Votes: " + post.GetVote());
+    }
+}
