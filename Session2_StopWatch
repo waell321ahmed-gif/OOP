@@ -1,0 +1,61 @@
+using System;
+
+enum MenuOption
+{
+    Start,
+    Stop,
+    Exit
+}
+
+public class StopWatch
+{
+    private DateTime _start;
+    private DateTime _stop;
+
+    public void Start()
+    {
+        _start = DateTime.Now;
+        Console.WriteLine("Stopwatch Started");
+    }
+
+    public void Stop()
+    {
+        _stop = DateTime.Now;
+
+        TimeSpan duration = _stop - _start;
+        Console.WriteLine($"Duration: {duration}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        StopWatch S = new StopWatch();
+
+        while (true)
+        {
+            Console.WriteLine("\n1- Start");
+            Console.WriteLine("2- Stop");
+            Console.WriteLine("3- Exit");
+
+            int input = int.Parse(Console.ReadLine());
+
+            MenuOption option = (MenuOption)(input - 1);
+
+            switch (option)
+            {
+                case MenuOption.Start:
+                    S.Start();
+                    break;
+
+                case MenuOption.Stop:
+                    S.Stop();
+                    break;
+
+                case MenuOption.Exit:
+                    return;
+            }
+        }
+    }
+}
